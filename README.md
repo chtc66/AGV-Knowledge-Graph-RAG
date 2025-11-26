@@ -15,7 +15,7 @@
 ![Knowledge Graph Visualization](./assets/graph_preview.png)
 
 ### 2. 实体对齐效果
-*(此处放一张 Lidar 和 激光雷达 被合并后的局部图，或者清洗脚本运行成功的终端截图)*
+<img width="852" height="153" alt="aab14f08-8d20-4b60-a0c1-dd9358096853" src="https://github.com/user-attachments/assets/4f9d45ed-f598-4b6f-9b3c-b81bbe336503" />
 ![Entity Resolution](./assets/cleaning_process.png)
 
 ## 📖 Background (项目背景)

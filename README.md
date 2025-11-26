@@ -12,11 +12,8 @@
 ### 1. Neo4j 图谱可视化
 <img width="2420" height="702" alt="68075a5f-c043-4184-98e2-d8e006ceb9ca" src="https://github.com/user-attachments/assets/91e9d328-061e-49d5-8874-0dc304e004a7" />
 
-![Knowledge Graph Visualization](./assets/graph_preview.png)
-
 ### 2. 实体对齐效果
 <img width="852" height="153" alt="aab14f08-8d20-4b60-a0c1-dd9358096853" src="https://github.com/user-attachments/assets/4f9d45ed-f598-4b6f-9b3c-b81bbe336503" />
-![Entity Resolution](./assets/cleaning_process.png)
 
 ## 📖 Background (项目背景)
 

@@ -1,0 +1,22 @@
+# --- 数据库数据 (绝对不能传) ---
+neo4j_data/
+milvus_data/
+data/
+import/
+logs/
+
+# --- 大文件与插件 ---
+plugins/
+*.jar
+*.pdf
+*.zip
+*.tar.gz
+
+# --- 缓存与环境 ---
+__pycache__/
+*.pyc
+.env
+venv/
+.venv/
+.idea/
+.vscode/

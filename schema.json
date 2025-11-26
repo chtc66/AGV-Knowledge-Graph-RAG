@@ -1,0 +1,42 @@
+{
+    "entities": [
+        {
+            "type": "Component",
+            "description": "部件 - AGV的组成部分，如传感器、控制器等"
+        },
+        {
+            "type": "Hazard",
+            "description": "危险源 - 可能导致伤害或财产损失的潜在根源"
+        },
+        {
+            "type": "SafetyRequirement",
+            "description": "安全要求 - 为降低风险必须满足的条件或规定"
+        },
+        {
+            "type": "StandardClause",
+            "description": "标准条款编号 - 相关安全标准中的具体条款引用"
+        },
+        {
+            "type": "SafetyFunction",
+            "description": "安全功能 - 用于实现安全要求的具体功能"
+        }
+    ],
+    "relations": [
+        {
+            "type": "MITIGATES",
+            "description": "部件抑制危险 - 部件或功能降低了某种危险发生的可能性或后果"
+        },
+        {
+            "type": "REQUIRES",
+            "description": "危险需要要求 - 识别出的危险需要满足特定的安全要求"
+        },
+        {
+            "type": "DEFINED_IN",
+            "description": "要求出自某条款 - 安全要求来源于具体的标准条款"
+        },
+        {
+            "type": "HAS_PART",
+            "description": "部件包含部件 - 部件之间的组成关系"
+        }
+    ]
+}

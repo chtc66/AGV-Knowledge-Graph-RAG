@@ -1,0 +1,75 @@
+version: '3.5'
+
+services:
+  # ================= 1. Neo4j (图数据库) =================
+  # 作用：存储 AGV 的零部件关系、失效模式逻辑
+  neo4j:
+    image: neo4j:5.15.0
+    container_name: agv_neo4j
+    ports:
+      - "7474:7474" # 浏览器访问界面
+      - "7687:7687" # Python 代码连接口
+    environment:
+      - NEO4J_AUTH=neo4j/agv_safe2024  # 【账号】neo4j 【密码】agv_safe2024
+      - NEO4J_PLUGINS=["apoc"]         # 启用 APOC 插件(做图谱必用)
+    volumes:
+      - ./neo4j_data:/data             # 数据持久化到本地
+
+  # ================= 2. Milvus (向量数据库) =================
+  # 作用：存储标准文档切片后的向量，用于模糊搜索
+
+  # 2.1 Etcd (Milvus 的记账员，存元数据)
+  etcd:
+    container_name: milvus-etcd
+    image: quay.io/coreos/etcd:v3.5.5
+    environment:
+      - ETCD_AUTO_COMPACTION_MODE=revision
+      - ETCD_AUTO_COMPACTION_RETENTION=1000
+      - ETCD_QUOTA_BACKEND_BYTES=4294967296
+    volumes:
+      - ./milvus_data/etcd:/etcd
+    command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+
+  # 2.2 MinIO (Milvus 的仓库管理员，存向量文件)
+  minio:
+    container_name: milvus-minio
+    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    volumes:
+      - ./milvus_data/minio:/minio_data
+    command: minio server /minio_data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # 2.3 Milvus 本身 (核心大脑)
+  milvus:
+    container_name: milvus-standalone
+    image: milvusdb/milvus:v2.3.4
+    command: ["milvus", "run", "standalone"]
+    environment:
+      ETCD_ENDPOINTS: etcd:2379
+      MINIO_ADDRESS: minio:9000
+    volumes:
+      - ./milvus_data/milvus:/var/lib/milvus
+    ports:
+      - "19530:19530" # 主要服务端口
+    depends_on:
+      - "etcd"
+      - "minio"
+
+  # ================= 3. Attu (Milvus 的可视化界面) =================
+  # 作用：让你像看 Excel 一样看向量库里的数据，新手必备
+  attu:
+    container_name: milvus-attu
+    image: zilliz/attu:v2.3.4
+    environment:
+      MILVUS_URL: milvus:19530
+    ports:
+      - "8000:3000" # 浏览器访问端口
+    depends_on:
+      - "milvus"
